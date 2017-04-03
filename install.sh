@@ -8,12 +8,6 @@ set -x
 set -e
 
 sudo xcode-select --install
-sudo pip install --upgrade pip
-sudo pip install virtualenv
-sudo pip install virtualenvwrapper
-# If you want to install any virtenv, set the workon home beforehand
-# export WORKON_HOME="~/.pyvirtualenvs"
-# export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # OS X upgrades are not optimized for lots of files in /usr/local, but ok with /opt
 export BREW_PREFIX=/opt/homebrew
@@ -25,7 +19,17 @@ sed_str="s,/usr/local,${BREW_PREFIX},g"
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install | sed -E $sed_str)"
 brew update
 brew install bash-completion dos2unix git tmux trash tree watch wget
+
+# vim requires Python.h
 brew install python
+# you may need to chown -R ${USER}:admin && chmod -R g+w $BREW_PREFIX/...sitepackages
+pip install --upgrade pip setuptools
+# we need virtualenvwrapper for the .zshrc file
+pip install virtualenvwrapper
+# If you want to install any virtenv, set the workon home beforehand
+# export WORKON_HOME="~/.pyvirtualenvs"
+# export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 brew install vim
 
 brew install zsh zsh-completions
