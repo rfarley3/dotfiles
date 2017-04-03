@@ -19,6 +19,7 @@ let $PAGER=''
 " enable click to move the cursor and highlight text
 set mouse=a
 " yank/paste from system keyboard (may be Mac specific), must have +clipboard build option
+" the default OS X vim is -clipboard, but the default Homebrew vim has it: brew install vim
 set clipboard=unnamed
 " autoindent
 set ai
