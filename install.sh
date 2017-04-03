@@ -3,6 +3,11 @@
 echo "Did you set the proxy correctly?"
 # this includes /etc/sudoers:
 # Defaults	env_keep += "http_proxy HTTP_PROXY https_proxy HTTPS_PROXY ftp_proxy FTP_PROXY socks_proxy SOCKS_PROXY JAVA_OPTS”
+echo "Did you set the username in zshrc correctly?"
+echo "Did you remove the proxy info if you don't need it?"
+echo "Did you set the default git remote name correctly?"
+echo "If so, edit this script and remove the exit below this echo"
+exit 1
 
 set -x
 set -e

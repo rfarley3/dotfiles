@@ -6,9 +6,11 @@ cp vimrc ~/.vimrc
 
 cp gitconfig ~/.gitconfig
 
+# If you need to inject certs for a proxy
 mkdir -p ~/.vagrant.d
 cp Vagrantfile ~/.vagrant.d/.
 
+# If you need insecure dl bc proxy
 cp curlrc ~/.curlrc
 
 mkdir -p ~/Github
