@@ -66,6 +66,7 @@ set runtimepath^=~/.vim/bundle/textutil
 set runtimepath^=~/.vim/bundle/vim-markdown
 set runtimepath^=~/.vim/bundle/zenburn
 set runtimepath^=~/.vim/bundle/gitgutter
+set runtimepath^=~/.vim/bundle/fugitive
 let g:zenburn_high_Contrast=1
 colorscheme zenburn
 
