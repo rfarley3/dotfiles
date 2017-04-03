@@ -24,7 +24,9 @@ chmod -R g+w $BREW_PREFIX
 sed_str="s,/usr/local,${BREW_PREFIX},g"
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install | sed -E $sed_str)"
 brew update
-brew install bash-completion dos2unix git tmux trash tree vim watch wget
+brew install bash-completion dos2unix git tmux trash tree watch wget
+brew install python
+brew install vim
 
 brew install zsh zsh-completions
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
