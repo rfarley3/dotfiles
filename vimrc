@@ -65,6 +65,7 @@ inoremap <C-t>   <Esc>:tabnew <bar> :E<CR>
 set runtimepath^=~/.vim/bundle/textutil
 set runtimepath^=~/.vim/bundle/vim-markdown
 set runtimepath^=~/.vim/bundle/zenburn
+set runtimepath^=~/.vim/bundle/gitgutter
 let g:zenburn_high_Contrast=1
 colorscheme zenburn
 

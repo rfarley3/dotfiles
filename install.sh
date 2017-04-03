@@ -49,6 +49,7 @@ mkdir -p ~/.vim/bundle
 (cd ~/.vim/bundle && git clone git@github.com:vim-scripts/textutil.vim.git textutil)
 (cd ~/.vim/bundle && git clone git@github.com:plasticboy/vim-markdown.git vim-markdown)
 (cd ~/.vim/bundle && git clone git@github.com:jnurmine/Zenburn.git zenburn)
+(cd ~/.vim/bundle && git clone git@github.com:airblade/vim-gitgutter.git gitgutter)
 
 # OS X upgrades are not optimized for lots of files in /usr/local, but ok with /opt
 # OS X will enumerate each file individually in /usr/local, but does a dir cp in /opt 
