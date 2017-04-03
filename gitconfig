@@ -1,0 +1,40 @@
+[user]
+	name = rfarley
+	email = rfarley@mitre.org
+[core]
+	editor = vim
+	autoclrf = input
+	#whitespace = cr-at-eol
+	#pager = lss
+[http]
+[https]
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[https]
+[http]
+[alias]
+	co = checkout
+	lolold = log --pretty=oneline --abbrev-commit --graph --decorate --all
+	lol = log --abbrev-commit --graph --decorate --all --pretty=format:'%C(yellow)%h|%Cred%>(14)%ad|%Cblue%an|%C(auto)%d %Creset%s' --date=relative
+	st = status -sb
+	wdiff = diff --color-words --word-diff-regex='[A-z_][A-z_]+'
+	diffi = diff --ignore-space-at-eol
+	diffstaged = diff --cached
+	unadd = reset HEAD 
+	unmod = checkout --
+	branchv = branch -v -a
+	branchdel = branch --delete
+	branchdelorigin = push origin --delete
+	branchprune = remote prune origin
+	#= whatchanged -m -n 1 -p
+	logbranch = log master..
+[push]
+	default = simple # no need to specify origin all the time
+	# default = tracking # whenever you push it'll make a origin tracker if needed
+[merge]
+	conflictstyle = diff3
+[credential]
+	helper = osxkeychain
+[url "ssh://git@github.com/"]
+	insteadOf = git://github.com/
