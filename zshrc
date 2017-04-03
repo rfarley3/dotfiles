@@ -1,8 +1,8 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/rfarley/.oh-my-zsh
+DEFAULT_USER="rfarley"
+export ZSH=/Users/${DEFAULT_USER}/.oh-my-zsh
 
 ZSH_THEME="agnosterjf"
-DEFAULT_USER="rfarley"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -34,7 +34,6 @@ DISABLE_AUTO_UPDATE="true"
 plugins=(git brew fabric pip sublime vagrant virtualenvwrapper wd)
 
 # User configuration
-
 export BREW_PREFIX=/opt/homebrew
 fpath=($BREW_PREFIX/share/zsh-completions $fpath)
 export PATH="/Users/$DEFAULT_USER/bin:$BREW_PREFIX/bin:$BREW_PREFIX/sbin:/opt/usrlocal/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:$PATH"

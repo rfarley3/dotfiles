@@ -1,4 +1,3 @@
-colorscheme zenburn
 " show line number
 set number
 " show partial commands as you type them
@@ -64,4 +63,44 @@ inoremap <C-t>   <Esc>:tabnew <bar> :E<CR>
 " git clone <each plugin>
 set runtimepath^=~/.vim/bundle/textutil
 set runtimepath^=~/.vim/bundle/vim-markdown
+set runtimepath^=~/.vim/bundle/zenburn
+let g:zenburn_high_Contrast=1
+colorscheme zenburn
+
+
+fun! TrimTag(tag_str)
+  let trimmed = substitute(a:tag_str, '^\s*\(.\{-}\):.*$', '\1', '')
+  let trimmed = substitute(trimmed, '^\(class\|def\)\s*', '', '')
+  let trimmed = substitute(trimmed, 'self, ', '', '')
+  let trimmed = substitute(trimmed, '(self)', '()', '')
+  let trimmed = substitute(trimmed, '(object)', '', '')
+  return trimmed
+endfun
+fun! GetTagPath()
+  let parent_linenum = line(".")
+  let parent_line = getline(parent_linenum)
+  if parent_line !~ '^\s*\(class\|def\)'
+    let parent_linenum = search('^\s*\(class\|def\).*', 'bWn')
+    let parent_line = getline(parent_linenum)
+  endif
+  let gparent_name = ''
+  if parent_line[0] == ' '
+    let lnum = line(".")
+	let col = col(".")
+	call search("\\%" . parent_linenum . "l" . "\\%0c")
+    let gparent_line = getline(search('^\(class\|def\).*', 'bWn'))
+	call search("\\%" . lnum . "l" . "\\%" . col . "c")
+    let gparent_name = '.' . TrimTag(gparent_line)
+  endif
+  return gparent_name . '.' . TrimTag(parent_line)
+endfun
+fun! ShowTagPath()
+  echohl ModeMsg
+  echo GetTagPath()
+  echohl None
+endfun
+" press t at anytime to update this
+" map t :call ShowTagPath() <CR>
+" or enable a refresh anytime your move the cursor
+autocmd  CursorMoved  *.py   :call ShowTagPath()
 
