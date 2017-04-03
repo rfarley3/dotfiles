@@ -69,11 +69,19 @@ colorscheme zenburn
 
 
 fun! TrimTag(tag_str)
-  let trimmed = substitute(a:tag_str, '^\s*\(.\{-}\):.*$', '\1', '')
+  let trimmed = substitute(a:tag_str, '^\s*\(.\{-}\)\s*$', '\1', '')
+  let trimmed = substitute(trimmed, ':.*$', '', '')
   let trimmed = substitute(trimmed, '^\(class\|def\)\s*', '', '')
-  let trimmed = substitute(trimmed, 'self, ', '', '')
+  let trimmed = substitute(trimmed, 'self,\s*', '', '')
   let trimmed = substitute(trimmed, '(self)', '()', '')
   let trimmed = substitute(trimmed, '(object)', '', '')
+  if trimmed == ''
+    return trimmed
+  elseif trimmed =~ '($'
+    let trimmed .= '...)'
+  elseif trimmed !~ ')$'
+    let trimmed .= ' ...)'
+  endif
   return trimmed
 endfun
 fun! GetTagPath()
@@ -81,18 +89,26 @@ fun! GetTagPath()
   let parent_line = getline(parent_linenum)
   if parent_line !~ '^\s*\(class\|def\)'
     let parent_linenum = search('^\s*\(class\|def\).*', 'bWn')
+	if parent_linenum == 0
+	  return '.'
+	endif
     let parent_line = getline(parent_linenum)
   endif
-  let gparent_name = ''
-  if parent_line[0] == ' '
-    let lnum = line(".")
-	let col = col(".")
-	call search("\\%" . parent_linenum . "l" . "\\%0c")
-    let gparent_line = getline(search('^\(class\|def\).*', 'bWn'))
-	call search("\\%" . lnum . "l" . "\\%" . col . "c")
-    let gparent_name = '.' . TrimTag(gparent_line)
+  let parent_name = '.' . TrimTag(parent_line)
+  if parent_line[0] != ' '
+    return parent_name
   endif
-  return gparent_name . '.' . TrimTag(parent_line)
+  let lnum = line(".")
+  let col = col(".")
+  call search("\\%" . parent_linenum . "l" . "\\%0c")
+  let gparent_linenum = search('^\(class\|def\).*', 'bWn')
+  call search("\\%" . lnum . "l" . "\\%" . col . "c")
+  if gparent_linenum == 0
+	return parent_name
+  endif
+  let gparent_line = getline(gparent_linenum)
+  let gparent_name = '.' . TrimTag(gparent_line)
+  return gparent_name . parent_name
 endfun
 fun! ShowTagPath()
   echohl ModeMsg
