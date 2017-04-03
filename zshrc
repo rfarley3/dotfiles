@@ -172,6 +172,7 @@ function _proxy()
 
 # This is a less-esque file viewer, but uses vim syntax highlighting, line numbering, and regex searches
 # bc it is vim, if the file is a directory, then you get a directory list
+# Without arguments it will read from stdin (like less) so you can pipe things into it
 # Cmds:
 #     <space>: forward 1 pg; 'b': back 1 page;
 #     'n': search forward; 'N': search backwards.
@@ -183,6 +184,8 @@ function lss()
 		if test $# = 0; then
 			vim --cmd 'let no_plugin_maps = 1' -c 'runtime! macros/less.vim' -
 		else
+			# if you want ls to list dir instead of vi, add this conditional:
+			# if [ -d "$1" ]; then ls $@ else
 			vim --cmd 'let no_plugin_maps = 1' -c 'runtime! macros/less.vim' "$@"
 		fi
 	else
@@ -195,7 +198,7 @@ function lss()
 	fi
 }
 # Old methods:
-#alias lss=/usr/share/vim/vim73/macros/less.sh
+# alias lss=/usr/share/vim/vim73/macros/less.sh
 # or copied locally (get the .sh and .vim)
 # alias lss='~/bin/less.sh'
 
