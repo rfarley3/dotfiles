@@ -99,8 +99,8 @@ endfun
 fun! GetTagPath()
   let parent_linenum = line(".")
   let parent_line = getline(parent_linenum)
-  if parent_line !~ '^\s*\(class\|def\)'
-    let parent_linenum = search('^\s*\(class\|def\).*', 'bWn')
+  if parent_line !~ '^\s*\(class\|def\) '
+    let parent_linenum = search('^\s*\(class\|def\) .*', 'bWn')
 	if parent_linenum == 0
 	  return '.'
 	endif
@@ -113,7 +113,7 @@ fun! GetTagPath()
   let lnum = line(".")
   let col = col(".")
   call search("\\%" . parent_linenum . "l" . "\\%0c")
-  let gparent_linenum = search('^\(class\|def\).*', 'bWn')
+  let gparent_linenum = search('^\(class\|def\) .*', 'bWn')
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
   if gparent_linenum == 0
 	return parent_name
@@ -128,7 +128,8 @@ fun! ShowTagPath()
   echohl None
 endfun
 " press t at anytime to update this
-" map t :call ShowTagPath() <CR>
+nnoremap <C-f>   :call ShowTagPath() <CR>
+inoremap <C-f>   <Esc>:call ShowTagPath() <CR>
 " or enable a refresh anytime your move the cursor
-autocmd  CursorMoved  *.py   :call ShowTagPath()
+" autocmd  CursorMoved  *.py   :call ShowTagPath()
 
