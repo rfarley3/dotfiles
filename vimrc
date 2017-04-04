@@ -72,17 +72,26 @@ colorscheme zenburn
 
 
 fun! TrimTag(tag_str)
-  let trimmed = substitute(a:tag_str, '^\s*\(.\{-}\)\s*$', '\1', '')
+  let trimmed = a:tag_str
+  if trimmed == ''
+    return trimmed
+  endif
+  " remove : and any comments or trailing spaces
   let trimmed = substitute(trimmed, ':.*$', '', '')
+  " trim surrounding whitespace
+  let trimmed = substitute(trimmed, '^\s*\(.\{-}\)\s*$', '\1', '')
   let trimmed = substitute(trimmed, '^\(class\|def\)\s*', '', '')
+  " remove self from the arg list, handling args on both single and split lines
   let trimmed = substitute(trimmed, 'self,\s*', '', '')
+  " handle self when only arg
   let trimmed = substitute(trimmed, '(self)', '()', '')
+  " don't show class's super if only object
   let trimmed = substitute(trimmed, '(object)', '', '')
   if trimmed == ''
     return trimmed
   elseif trimmed =~ '($'
     let trimmed .= '...)'
-  elseif trimmed !~ ')$'
+  elseif trimmed =~ ',$'  " aka !~ ')$'
     let trimmed .= ' ...)'
   endif
   return trimmed
