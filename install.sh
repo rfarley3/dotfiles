@@ -44,6 +44,8 @@ brew install zsh-syntax-highlighting
 brew install p7zip unp
 # brew install hexedit libmagic ssdeep yara
 # brew install qemu wine
+# for vim pdf reading
+brew install xpdf
 
 mkdir -p ~/.vim/bundle
 (cd ~/.vim/bundle && git clone git@github.com:vim-scripts/textutil.vim.git textutil)

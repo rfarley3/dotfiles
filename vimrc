@@ -14,12 +14,33 @@ set incsearch
 set hlsearch
 " use syntax highlighting
 syntax on
+" set showmode
+set foldmethod=indent
+set foldlevel=99
+if v:version >= 703
+  " num col shows cursor line as abs, but all others as relative
+  " set relativenumber
+  set colorcolumn=80
+endif
+" navigate wrapped lines with up/down
+nnoremap <down> gj
+nnoremap j gj
+nnoremap <up> gk
+nnoremap k gk
+" stop having to press shift all the time for :
+noremap ; :
+" less pinky reach for esc, same as ctrl-[
+inoremap jj <ESC>
+" Show trailing whitespace with a <
+set list
+set listchars=tab:>.,trail:<
 " we use vim as a pager, so within vim it needs to know to not call itself
 let $PAGER=''
 " enable click to move the cursor and highlight text
 set mouse=a
-" yank/paste from system keyboard (may be Mac specific), must have +clipboard build option
-" the default OS X vim is -clipboard, but the default Homebrew vim has it: brew install vim
+" yank/paste from system keyboard (Mac OS X specific)
+" must have +clipboard build option, but default OS X vim lacks it
+" the default Homebrew vim has it: brew install vim
 set clipboard=unnamed
 " autoindent
 set ai
@@ -68,8 +89,20 @@ set runtimepath^=~/.vim/bundle/zenburn
 set runtimepath^=~/.vim/bundle/gitgutter
 set runtimepath^=~/.vim/bundle/fugitive
 let g:zenburn_high_Contrast=1
-colorscheme zenburn
+if filereadable(expand("$HOME/.vim/bundle/zenburn/colors/zenburn.vim"))
+  colorscheme zenburn
+else
+  " fall back to an available default color
+  colorscheme elflord
+endif
+let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
+" For Markdown files: edit paragraphs like GUI text editor,
+" automatically break lines wider than 80 chars and
+" if an earlier line has room, then roll later lines words back up into it
+" you'll really want to remap j/k to gj/k to the up/down works intuitively
+" http://vim.wikia.com/wiki/Automatic_formatting_of_paragraphs
+au BufRead,BufNewFile *.md setlocal tw=80 ts=2 sts=2 sw=2 foldlevel=20 fo=aw2tq
 
 fun! TrimTag(tag_str)
   let trimmed = a:tag_str
@@ -101,9 +134,9 @@ fun! GetTagPath()
   let parent_line = getline(parent_linenum)
   if parent_line !~ '^\s*\(class\|def\) '
     let parent_linenum = search('^\s*\(class\|def\) .*', 'bWn')
-	if parent_linenum == 0
-	  return '.'
-	endif
+    if parent_linenum == 0
+      return '.'
+    endif
     let parent_line = getline(parent_linenum)
   endif
   let parent_name = '.' . TrimTag(parent_line)
@@ -116,7 +149,7 @@ fun! GetTagPath()
   let gparent_linenum = search('^\(class\|def\) .*', 'bWn')
   call search("\\%" . lnum . "l" . "\\%" . col . "c")
   if gparent_linenum == 0
-	return parent_name
+    return parent_name
   endif
   let gparent_line = getline(gparent_linenum)
   let gparent_name = '.' . TrimTag(gparent_line)
@@ -127,9 +160,10 @@ fun! ShowTagPath()
   echo GetTagPath()
   echohl None
 endfun
-" press t at anytime to update this
-nnoremap <C-f>   :call ShowTagPath() <CR>
-inoremap <C-f>   <Esc>:call ShowTagPath() <CR>
+
+let mapleader = ","
+" press ,t at anytime to print tag path
+nnoremap <leader>t   :call ShowTagPath() <CR>
 " or enable a refresh anytime your move the cursor
 " autocmd  CursorMoved  *.py   :call ShowTagPath()
 
