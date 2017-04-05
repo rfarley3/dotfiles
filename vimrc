@@ -167,4 +167,6 @@ let mapleader = ","
 nnoremap <leader>t   :call ShowTagPath() <CR>
 " or enable a refresh anytime your move the cursor
 " autocmd  CursorMoved  *.py   :call ShowTagPath()
+" use ,wc to get num lines, words, and chars from a visual mode selection
+vnoremap <leader>wc g<C-g>:<C-U>echo v:statusmsg<CR>
 
