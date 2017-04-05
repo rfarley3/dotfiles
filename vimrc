@@ -60,6 +60,8 @@ set shiftwidth=4
 set softtabstop=4
 " allows backspace to cross newlines, consume indents in one press, etc
 set backspace=indent,eol,start
+" put 1, not 2 spaces after [.!?] when line join is used
+set nojoinspaces
 " some macros for common tedious to type sequences
 ab #b /****************************************
 ab #e ^V^H*****************************************/
