@@ -88,6 +88,7 @@ set runtimepath^=~/.vim/bundle/vim-markdown
 set runtimepath^=~/.vim/bundle/zenburn
 set runtimepath^=~/.vim/bundle/gitgutter
 set runtimepath^=~/.vim/bundle/fugitive
+set runtimepath^=~/.vim/bundle/nerdtree
 let g:zenburn_high_Contrast=1
 if filereadable(expand("$HOME/.vim/bundle/zenburn/colors/zenburn.vim"))
   colorscheme zenburn
