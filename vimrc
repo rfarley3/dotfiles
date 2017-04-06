@@ -105,7 +105,9 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " if an earlier line has room, then roll later lines words back up into it
 " you'll really want to remap j/k to gj/k to the up/down works intuitively
 " http://vim.wikia.com/wiki/Automatic_formatting_of_paragraphs
-au BufRead,BufNewFile *.md setlocal tw=80 ts=2 sts=2 sw=2 foldlevel=20 fo=aw2tq
+au FileType gitcommit setlocal spell spelllang=en_us
+au BufRead,BufNewFile *.md,*.markdown,*.txt setlocal spell spelllang=en_us
+au BufRead,BufNewFile *.md,*.markdown setlocal tw=80 ts=2 sts=2 sw=2 foldlevel=20 fo=aw2tq
 
 fun! TrimTag(tag_str)
   let trimmed = a:tag_str
