@@ -190,7 +190,8 @@ vnoremap <leader>wc g<C-g>:<C-U>echo v:statusmsg<CR>
 "map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " add python virtual env support
-py3 << EOF
+if has('python3')
+  py3 << EOF
 import os
 import sys
 if 'VIRTUAL_ENV' in os.environ:
@@ -199,12 +200,15 @@ if 'VIRTUAL_ENV' in os.environ:
     # py2 equivalent: execfile(activate_this, dict(__file__=activate_this))
     exec(compile(open(activate_this, "rb").read(), activate_this, 'exec'), dict(__file__=activate_this))
 EOF
+endif
 " pip3 install --user powerline-status
-py3 << EOF
+if has('python3')
+  py3 << EOF
 from powerline.vim import setup as powerline_setup
 powerline_setup()
 del powerline_setup
 EOF
-set laststatus=2 " Always display the statusline in all windows
-set showtabline=2 " Always display the tabline, even if there is only one tab
-set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+  set laststatus=2 " Always display the statusline in all windows
+  set showtabline=2 " Always display the tabline, even if there is only one tab
+  set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
+endif
