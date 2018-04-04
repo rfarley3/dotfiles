@@ -15,6 +15,7 @@ export HTTPS_PROXY=$server
 
 function preinstall {
 cp zshrc ~/.zshrc
+cp zshrc-proxy ~/.zshrc-proxy
 cp vimrc ~/.vimrc
 cp gitconfig ~/.gitconfig
 # If you need to inject certs for a proxy

@@ -1,0 +1,69 @@
+proxy () { # consistently set proxy environment values
+    local host port
+    case "$1" in
+        (default|gatekeeper-w|-)
+            host='gatekeeper-w.mitre.org'
+            port='80'
+            ;;
+        (gatekeeper)
+            host='gatekeeper.mitre.org'
+            port='80'
+            ;;
+        (alternate)  # via INFOSEC-list during proxy testing 2015/03/19
+            host='proxyw2.mitre.org'
+            port='80'
+            ;;
+        (clear|--)
+            unset HTTP_PROXY http_proxy HTTPS_PROXY https_proxy NO_PROXY no_proxy
+            unset ALL_PROXY all_proxy FTP_PROXY ftp_proxy RSYNC_PROXY JAVA_PROXY
+            return
+            ;;
+        (*)
+            cat <<-EOF
+Recognized proxys: default, -, gatekeeper{,-w}, alternate, clear, --
+
+Normal usage:
+ proxy -     # sets up defaut proxy environment variables
+ proxy clear # unset all proxy environmemt variables, e.g., if on OuterNet
+ proxy       # display this help and current *proxy* environment variables.
+
+EOF
+            echo "current settings:"
+            env | grep -i proxy | sort -f
+            return
+            ;;
+    esac
+    # Various combos I've come across; sometimes case matters
+    export http_proxy="http://${host}:${port}/"
+    export HTTP_PROXY=${http_proxy} 
+    export HTTPS_PROXY=${http_proxy} https_proxy=${http_proxy}
+    export FTP_PROXY=${http_proxy} ftp_proxy=${http_proxy}
+    export SOCKS_PROXY=${http_proxy} socks_proxy=${http_proxy}
+    export ALL_PROXY=${http_proxy} all_proxy=${http_proxy}
+    export RSYNC_PROXY="${host}:${port}"
+    # NO_PROXY - some docs say just domain names (wget) others (Firefox) include IP ranges
+    export NO_PROXY="localhost,*.mitre.org,mitre.org,*.local,127.0.0.1,128.29.0.0/8,129.83.0.0/8,10.240.0.0/8,10.84.0.0/8"
+    export no_proxy=${NO_PROXY}
+    # Use: e.g.; java $JAVA_PROXY ...
+    export JAVA_PROXY=<<EOF
+      -Dhttp.proxyHost=${host} \
+      -Dhttps.proxyHost=${host} \
+      -Dhttp.proxyPort=${port} \
+      -Dhttps.proxyPort=${port} \
+      -Dhttp.nonProxyHosts=127.0.0.1|*.mitre.org|128.29.*|129.83.*|10.240.*|10.84.*
+EOF
+}
+proxyfn_opts="default gatekeeper gatekeeper-w - alternate clear --"
+function _proxy()
+{
+    local cur
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    if [[ ${cur} == * ]] ; then
+        COMPREPLY=( $(compgen -W "${proxyfn_opts}" -- ${cur}) )
+        return 0
+    fi
+}
+# complete -F _proxy proxy
+proxy default

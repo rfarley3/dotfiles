@@ -35,11 +35,23 @@ plugins=(git brew fabric pip sublime vagrant virtualenvwrapper wd)
 
 # User configuration
 export BREW_PREFIX=/opt/homebrew
+# if completions do not work, refresh them with:
+#  rm -f ~/.zcompdump; compinit
+#  chmod go-w '/opt/homebrew/share'
 fpath=($BREW_PREFIX/share/zsh-completions $fpath)
 export PATH="/Users/$DEFAULT_USER/bin:$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+# Use non-brew python
+#export PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:$PATH"
+# enable brew version of openssl
+# export PATH="/opt/homebrew/opt/openssl/bin:$PATH
+# For compilers to find this software you may need to set:
+#    LDFLAGS:  -L/opt/homebrew/opt/openssl/lib
+#    CPPFLAGS: -I/opt/homebrew/opt/openssl/include
+# For pkg-config to find this software you may need to set:
+#    PKG_CONFIG_PATH: /opt/homebrew/opt/openssl/lib/pkgconfig
+export PKG_CONFIG_PATH=$BREW_PREFIX/Cellar/libffi/3.0.13/lib/pkgconfig/
 export WORKON_HOME="~/.pyvirtualenvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-export PKG_CONFIG_PATH=$BREW_PREFIX/Cellar/libffi/3.0.13/lib/pkgconfig/
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -101,76 +113,6 @@ alias vmlsrunning='vagrant global-status | grep --color=no "^[0-9a-f]\{7\}" | gr
 alias vmsuspend='vagrant suspend $1'
 
 
-proxy () { # consistently set proxy environment values
-    local host port
-    case "$1" in
-        (default|gatekeeper-w|-)
-            host='gatekeeper-w.mitre.org'
-            port='80'
-            ;;
-        (gatekeeper)
-            host='gatekeeper.mitre.org'
-            port='80'
-            ;;
-        (alternate)  # via INFOSEC-list during proxy testing 2015/03/19
-            host='proxyw2.mitre.org'
-            port='80'
-            ;;
-        (clear|--)
-            unset HTTP_PROXY http_proxy HTTPS_PROXY https_proxy NO_PROXY no_proxy
-            unset ALL_PROXY all_proxy FTP_PROXY ftp_proxy RSYNC_PROXY JAVA_PROXY
-            return
-            ;;
-        (*)
-            cat <<-EOF
-Recognized proxys: default, -, gatekeeper{,-w}, alternate, clear, --
-
-Normal usage:
- proxy -     # sets up defaut proxy environment variables
- proxy clear # unset all proxy environmemt variables, e.g., if on OuterNet
- proxy       # display this help and current *proxy* environment variables.
-
-EOF
-            echo "current settings:"
-            env | grep -i proxy | sort -f
-            return
-            ;;
-    esac
-    # Various combos I've come across; sometimes case matters
-    export http_proxy="http://${host}:${port}/"
-    export HTTP_PROXY=${http_proxy} 
-    export HTTPS_PROXY=${http_proxy} https_proxy=${http_proxy}
-    export FTP_PROXY=${http_proxy} ftp_proxy=${http_proxy}
-    export SOCKS_PROXY=${http_proxy} socks_proxy=${http_proxy} 
-    export ALL_PROXY=${http_proxy} all_proxy=${http_proxy}
-    export RSYNC_PROXY="${host}:${port}"
-    # NO_PROXY - some docs say just domain names (wget) others (Firefox) include IP ranges
-    export NO_PROXY="localhost,*.mitre.org,mitre.org,*.local,127.0.0.1,128.29.0.0/8,129.83.0.0/8,10.240.0.0/8,10.84.0.0/8"
-    export no_proxy=${NO_PROXY}
-    # Use: e.g.; java $JAVA_PROXY ...
-    export JAVA_PROXY=<<EOF
-      -Dhttp.proxyHost=${host} \
-      -Dhttps.proxyHost=${host} \
-      -Dhttp.proxyPort=${port} \
-      -Dhttps.proxyPort=${port} \
-      -Dhttp.nonProxyHosts=127.0.0.1|*.mitre.org|128.29.*|129.83.*|10.240.*|10.84.*
-EOF
-}
-proxy default
-proxyfn_opts="default gatekeeper gatekeeper-w - alternate clear --"
-function _proxy() 
-{
-    local cur
-    COMPREPLY=()
-    cur="${COMP_WORDS[COMP_CWORD]}"
-
-    if [[ ${cur} == * ]] ; then
-        COMPREPLY=( $(compgen -W "${proxyfn_opts}" -- ${cur}) )
-        return 0
-    fi
-}
-# complete -F _proxy proxy
-
 # This is a less-esque file viewer, but uses vim syntax highlighting, line numbering, and regex searches
 # bc it is vim, if the file is a directory, then you get a directory list
 # Without arguments it will read from stdin (like less) so you can pipe things into it
@@ -205,3 +147,5 @@ function lss()
 
 source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# Comment out if you don't need the proxy settings
+source .zshrc-proxy
