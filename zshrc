@@ -36,7 +36,7 @@ plugins=(git brew fabric pip sublime vagrant virtualenvwrapper wd)
 # User configuration
 export BREW_PREFIX=/opt/homebrew
 fpath=($BREW_PREFIX/share/zsh-completions $fpath)
-export PATH="/Users/$DEFAULT_USER/bin:$BREW_PREFIX/bin:$BREW_PREFIX/sbin:/opt/usrlocal/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:$PATH"
+export PATH="/Users/$DEFAULT_USER/bin:$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
 export WORKON_HOME="~/.pyvirtualenvs"
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 export PKG_CONFIG_PATH=$BREW_PREFIX/Cellar/libffi/3.0.13/lib/pkgconfig/
@@ -60,6 +60,7 @@ source $ZSH/oh-my-zsh.sh
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 alias cd..='cd ..'
 alias gti='git'
+alias which='which -a'
 alias ls='ls -G'
 alias ll='ls -al'
 alias vi='vim'

@@ -1,3 +1,5 @@
+" default encoding
+set encoding=utf-8
 " show line number
 set number
 " show partial commands as you type them
@@ -14,7 +16,7 @@ set incsearch
 set hlsearch
 " use syntax highlighting
 syntax on
-" set showmode
+" set showmode, fold/unfold with za
 set foldmethod=indent
 set foldlevel=99
 if v:version >= 703
@@ -47,11 +49,12 @@ set ai
 " ?? set smartindent (a less strict cindent)
 " use spaces for tabs in py files
 " but default to tabs for others (c, cpp, h, etc)
-au BufRead,BufNewFile *.py set expandtab
+au BufRead,BufNewFile *.py set expandtab fileformat=unix
 " use c indention std for c files, ai for others
 au BufRead,BufNewFile *.c set cindent
 au BufRead,BufNewFile *.cpp set cindent
 au BufRead,BufNewFile *.h set cindent
+au BufRead,BufNewFile *.js,*.html,*.css setlocal ts=2 sts=2 sw=2
 " how many chars wide to use (visually) for a tab
 set tabstop=4
 " an indent equals this many spaces, used if expandtab is on
@@ -81,6 +84,14 @@ nnoremap <C-n>   :tabnext<CR>
 inoremap <C-n>   <Esc>:tabnext<CR>i
 nnoremap <C-t>   :tabnew <bar> :E<CR>
 inoremap <C-t>   <Esc>:tabnew <bar> :E<CR>
+" set where new splits happen
+set splitbelow
+set splitright
+" split navigations ctrl+j is down, k up, l right, h left
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
 " load these plugins
 " mkdir ~/.vim/bundle
 " cd ~/.vim/bundle
@@ -174,3 +185,26 @@ nnoremap <leader>t   :call ShowTagPath() <CR>
 " use ,wc to get num lines, words, and chars from a visual mode selection
 vnoremap <leader>wc g<C-g>:<C-U>echo v:statusmsg<CR>
 
+" if install Valloric/YouCompleteMe
+"let g:ycm_autoclose_preview_window_after_completion=1
+"map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" add python virtual env support
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+    project_base_dir = os.environ['VIRTUAL_ENV']
+    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+    # py2 equivalent: execfile(activate_this, dict(__file__=activate_this))
+    exec(compile(open(activate_this, "rb").read(), activate_this, 'exec'), dict(__file__=activate_this))
+EOF
+" pip3 install --user powerline-status
+py3 << EOF
+from powerline.vim import setup as powerline_setup
+powerline_setup()
+del powerline_setup
+EOF
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)

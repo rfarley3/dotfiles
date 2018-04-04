@@ -21,7 +21,7 @@
 	wdiff = diff --color-words --word-diff-regex='[A-z_][A-z_]+'
 	diffi = diff --ignore-space-at-eol
 	diffstaged = diff --cached
-	unadd = reset HEAD 
+	unadd = reset HEAD
 	unmod = checkout --
 	branchv = branch -v -a
 	branchdel = branch --delete
