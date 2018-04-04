@@ -18,6 +18,7 @@
 	lolold = log --pretty=oneline --abbrev-commit --graph --decorate --all
 	lol = log --abbrev-commit --graph --decorate --all --pretty=format:'%C(yellow)%h|%Cred%>(14)%ad|%Cblue%an|%C(auto)%d %Creset%s' --date=relative
 	st = status -sb
+	lsdiff = diff --name-only
 	wdiff = diff --color-words --word-diff-regex='[A-z_][A-z_]+'
 	diffi = diff --ignore-space-at-eol
 	diffstaged = diff --cached
@@ -29,6 +30,8 @@
 	branchprune = remote prune origin
 	#= whatchanged -m -n 1 -p
 	logbranch = log master..
+	track = push -u origin
+	update = !git fetch origin && git remote prune origin
 [push]
 	default = simple # no need to specify origin all the time
 	# default = tracking # whenever you push it'll make a origin tracker if needed
