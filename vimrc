@@ -117,8 +117,10 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 " you'll really want to remap j/k to gj/k to the up/down works intuitively
 " http://vim.wikia.com/wiki/Automatic_formatting_of_paragraphs
 au FileType gitcommit setlocal spell spelllang=en_us
-au BufRead,BufNewFile *.md,*.markdown,*.txt setlocal spell spelllang=en_us
-au BufRead,BufNewFile *.md,*.markdown setlocal tw=80 ts=2 sts=2 sw=2 foldlevel=20 fo=aw2tq
+au BufRead,BufNewFile *.md,*.markdown,*.txt,*.rst setlocal spell spelllang=en_us
+au BufRead,BufNewFile *.md,*.markdown,*.rst setlocal tw=80 ts=2 sts=2 sw=2 foldlevel=20 fo=aw2tq
+au BufRead,BufNewFile *.rst set expandtab fileformat=unix
+au BufWritePre *.rst %s/\s\+$//e
 
 fun! TrimTag(tag_str)
   let trimmed = a:tag_str
