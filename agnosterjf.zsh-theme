@@ -75,7 +75,7 @@ prompt_end() {
 }
 
 prompt_newline() {
-  echo -n "\n%T $SEGMENT_SEPARATOR"
+  echo -n "\n%{%D{%H:%M}%} $SEGMENT_SEPARATOR"
 }
 
 ### Prompt components
