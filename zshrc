@@ -41,7 +41,7 @@ export BREW_PREFIX=/opt/homebrew
 fpath=($BREW_PREFIX/share/zsh-completions $fpath)
 export PATH="/Users/$DEFAULT_USER/bin:$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
 # Use non-brew python
-#export PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:$PATH"
+# export PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:$PATH"
 # enable brew version of openssl
 # export PATH="/opt/homebrew/opt/openssl/bin:$PATH
 # For compilers to find this software you may need to set:
@@ -79,6 +79,8 @@ alias vi='vim'
 alias unp='unp -U'
 # only works for targz (use j for bzips)
 alias lstar='tar tzvf'
+alias rgrep='grep -RIin'
+alias jqless='f() { jq -C $1 $2 | less -R };f'
 
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
 alias rot1="tr '[a-zA-Z]' '[b-zA-Za]'"
