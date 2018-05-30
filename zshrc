@@ -80,6 +80,7 @@ alias unp='unp -U'
 # only works for targz (use j for bzips)
 alias lstar='tar tzvf'
 alias rgrep='grep -RIin'
+#alias jqless 'jq -C . $1 | less -R'
 alias jqless='f() { jq -C $1 $2 | less -R };f'
 
 alias rot13="tr '[A-Za-z]' '[N-ZA-Mn-za-m]'"
@@ -146,6 +147,61 @@ function lss()
 # alias lss=/usr/share/vim/vim73/macros/less.sh
 # or copied locally (get the .sh and .vim)
 # alias lss='~/bin/less.sh'
+
+# Copyleft 2017 by Ignacio Nunez Hernanz <nacho _a_t_ ownyourbits _d_o_t_ com>
+# GPL licensed (see end of file) * Use at your own risk!
+#
+# Usage:
+#   In the middle of the command line:
+#     (command being typed)<TAB>(resume typing)
+#
+#   At the beginning of the command line:
+#     <SPACE><TAB>
+#     <SPACE><SPACE><TAB>
+#
+# Notes:
+#   This does not affect other completions
+#   If you want 'cd ' or './' to be prepended, write in your .zshrc 'export TAB_LIST_FILES_PREFIX'
+#   I recommend to complement this with push-line-or edit (bindkey '^q' push-line-or-edit)
+function tab_list_files
+{
+  if [[ $#BUFFER == 0 ]]; then
+    BUFFER="ls "
+    CURSOR=3
+    zle list-choices
+    zle backward-kill-word
+  elif [[ $BUFFER =~ ^[[:space:]][[:space:]].*$ ]]; then
+    BUFFER="./"
+    CURSOR=2
+    zle list-choices
+    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER="  " CURSOR=2
+  elif [[ $BUFFER =~ ^[[:space:]]*$ ]]; then
+    BUFFER="cd "
+    CURSOR=3
+    zle list-choices
+    [ -z ${TAB_LIST_FILES_PREFIX+x} ] && BUFFER=" " CURSOR=1
+  else
+    BUFFER_=$BUFFER
+    CURSOR_=$CURSOR
+    zle expand-or-complete || zle expand-or-complete || {
+      BUFFER="ls "
+      CURSOR=3
+      zle list-choices
+      BUFFER=$BUFFER_
+      CURSOR=$CURSOR_
+    }
+  fi
+}
+zle -N tab_list_files
+bindkey '^I' tab_list_files
+
+# uncomment the following line to prefix 'cd ' and './'
+# when listing dirs and executables respectively
+#export TAB_LIST_FILES_PREFIX
+
+# these two lines are usually included by oh-my-zsh, but just in case
+autoload -Uz compinit
+compinit
 
 source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 

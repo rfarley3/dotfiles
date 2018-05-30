@@ -75,7 +75,7 @@ prompt_end() {
 }
 
 prompt_newline() {
-  echo -n "\n%{%D{%H:%M}%} $SEGMENT_SEPARATOR"
+  echo -n "\n%D{%H:%M} $SEGMENT_SEPARATOR"
 }
 
 ### Prompt components
@@ -206,5 +206,6 @@ build_prompt() {
   prompt_end
   prompt_newline
 }
+zstyle ':completion:*' insert-tab false
 
 PROMPT='%{%f%b%k%}$(build_prompt) '
