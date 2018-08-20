@@ -1,3 +1,6 @@
+" for tmux
+set nocompatible
+filetype plugin indent on
 " default encoding
 set encoding=utf-8
 " show line number
@@ -15,7 +18,7 @@ set incsearch
 " highlight the search match
 set hlsearch
 " use syntax highlighting
-syntax on
+syntax enable
 " set showmode, fold/unfold with za
 set foldmethod=indent
 set foldlevel=99
@@ -43,7 +46,9 @@ set mouse=a
 " yank/paste from system keyboard (Mac OS X specific)
 " must have +clipboard build option, but default OS X vim lacks it
 " the default Homebrew vim has it: brew install vim
-set clipboard=unnamed
+"if $TMUX == ''
+  set clipboard+=unnamed
+"endif
 " autoindent
 set ai
 " ?? set smartindent (a less strict cindent)
@@ -104,10 +109,12 @@ set runtimepath^=~/.vim/bundle/fugitive
 set runtimepath^=~/.vim/bundle/nerdtree
 let g:zenburn_high_Contrast=1
 if filereadable(expand("$HOME/.vim/bundle/zenburn/colors/zenburn.vim"))
+  set background=dark
   colorscheme zenburn
 else
   " fall back to an available default color
-  colorscheme elflord
+  let g:solarized_termcolors = 256
+  colorscheme solarized " elflord
 endif
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
