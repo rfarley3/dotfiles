@@ -16,7 +16,8 @@
 [alias]
 	co = checkout
 	lolold = log --pretty=oneline --abbrev-commit --graph --decorate --all
-	lol = log --abbrev-commit --graph --decorate --all --pretty=format:'%C(yellow)%h|%Cred%>(14)%ad|%Cblue%an|%C(auto)%d %Creset%s' --date=relative
+	# https://git-scm.com/docs/pretty-formats
+	lol = log --abbrev-commit --graph --decorate --all --pretty=format:'%C(auto,yellow)%h %C(auto,magenta)%>(14,trunc)%ad %C(auto,cyan)%>(10,trunc)%an%C(auto)%d %Creset%s' --date=relative
 	st = status -sb
 	lsdiff = diff --name-only
 	wdiff = diff --color-words --word-diff-regex='[A-z_][A-z_]+'
