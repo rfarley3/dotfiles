@@ -204,6 +204,8 @@ autoload -Uz compinit
 compinit
 
 source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=cyan'
+# disable the above with: 'none'
 
 # Comment out if you don't need the proxy settings
 source .zshrc-proxy
