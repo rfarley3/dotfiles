@@ -107,6 +107,9 @@ set runtimepath^=~/.vim/bundle/zenburn
 set runtimepath^=~/.vim/bundle/gitgutter
 set runtimepath^=~/.vim/bundle/fugitive
 set runtimepath^=~/.vim/bundle/nerdtree
+set runtimepath^=~/.vim/bundle/vim-airline
+set runtimepath^=~/.vim/bundle/vim-airline-clock
+set runtimepath^=~/.vim/bundle/vim-airline-themes
 let g:zenburn_high_Contrast=1
 if filereadable(expand("$HOME/.vim/bundle/zenburn/colors/zenburn.vim"))
   set background=dark
@@ -193,7 +196,8 @@ nnoremap <leader>t   :call ShowTagPath() <CR>
 " autocmd  CursorMoved  *.py   :call ShowTagPath()
 " use ,wc to get num lines, words, and chars from a visual mode selection
 vnoremap <leader>wc g<C-g>:<C-U>echo v:statusmsg<CR>
-
+" press ,c at anytime to see what time it is
+nnoremap <leader>c :echo strftime("%H:%M")<CR>
 " if install Valloric/YouCompleteMe
 "let g:ycm_autoclose_preview_window_after_completion=1
 "map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -210,14 +214,8 @@ if 'VIRTUAL_ENV' in os.environ:
     exec(compile(open(activate_this, "rb").read(), activate_this, 'exec'), dict(__file__=activate_this))
 EOF
 endif
-" pip3 install --user powerline-status
-if has('python3')
-  py3 << EOF
-from powerline.vim import setup as powerline_setup
-powerline_setup()
-del powerline_setup
-EOF
-  set laststatus=2 " Always display the statusline in all windows
-  set showtabline=2 " Always display the tabline, even if there is only one tab
-  set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
-endif
+let g:airline_powerline_fonts = 1
+let g:airline_theme='zenburn'
+set laststatus=2 " Always display the statusline in all windows
+set showtabline=2 " Always display the tabline, even if there is only one tab
+set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)

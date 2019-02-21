@@ -77,8 +77,9 @@ mkdir -p ~/.vim/bundle
 (cd ~/.vim/bundle && git clone git@github.com:airblade/vim-gitgutter.git gitgutter)
 (cd ~/.vim/bundle && git clone git@github.com:tpope/vim-fugitive.git fugitive)
 (cd ~/.vim/bundle && git clone git@github.com:scrooloose/nerdtree.git nerdtree)
-# https://powerline.readthedocs.io/en/latest/usage/other.html#vim-statusline
-pip3 install --user powerline-status
+(cd ~/.vim/bundle && git clone git@github.com:vim-airline/vim-airline.git vim-airline)
+(cd ~/.vim/bundle && git clone git@github.com:vim-airline/vim-airline-clock.git vim-airline-clock)
+(cd ~/.vim/bundle && git clone git@github.com:vim-airline/vim-airline-themes.git vim-airline-themes)
 }
 
 function inst_common {
